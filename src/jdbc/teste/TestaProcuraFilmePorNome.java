@@ -1,4 +1,4 @@
-package jdbc.testa;
+package jdbc.teste;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -6,11 +6,11 @@ import java.util.List;
 import jdbc.dao.FilmeDao;
 import jdbc.modelo.Filme;
 
-public class TestaProcuraPorAno {
+public class TestaProcuraFilmePorNome {
 	public static void main(String[] args) throws SQLException {
 		FilmeDao dao = new FilmeDao();
 	
-		List<Filme> filmes = dao.procuraPorAno(90);
+		List<Filme> filmes = dao.procuraPorNome("Wars");
 	
 		for (Filme filme : filmes) {
 			System.out.println("NomePort: " + filme.getNomePort());

@@ -87,31 +87,60 @@ public class FilmeDao {
 
 	public List<Filme> procuraPorAno (int ano) throws SQLException {
 		String sql = "select * from Filme where ano like ?;";
-		PreparedStatement stmt = connection.prepareStatement(sql);
-		stmt.setString(1, "%" + Integer.toString(ano));
-		ResultSet rs = stmt.executeQuery();
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, "%" + Integer.toString(ano));
+			ResultSet rs = stmt.executeQuery();
 		
-		List<Filme> filmes = new ArrayList<Filme>();
+			List<Filme> filmes = new ArrayList<Filme>();
 		
-		while(rs.next()){
-			Filme filme = new Filme();
-			filme.setID(rs.getLong("IDFilme"));
-			filme.setNomeOrig(rs.getString("nomeOrig"));
-			filme.setNomePort(rs.getString("nomePort"));
-			filme.setAno(rs.getInt("ano"));
-			filme.setDuracao(rs.getInt("duracao"));
-			filme.setClassificacao(rs.getInt("classificacao"));
-			filme.setSinopse(rs.getString("sinopse"));
-			filme.setQuantidadeVotos(rs.getInt("quantidadeVotos"));
-			filme.setSomaVotos(rs.getDouble("somaVotos"));
+			while(rs.next()){
+				Filme filme = new Filme();
+				filme.setID(rs.getLong("IDFilme"));
+				filme.setNomeOrig(rs.getString("nomeOrig"));
+				filme.setNomePort(rs.getString("nomePort"));
+				filme.setAno(rs.getInt("ano"));
+				filme.setDuracao(rs.getInt("duracao"));
+				filme.setClassificacao(rs.getInt("classificacao"));
+				filme.setSinopse(rs.getString("sinopse"));
+				filme.setQuantidadeVotos(rs.getInt("quantidadeVotos"));
+				filme.setSomaVotos(rs.getDouble("somaVotos"));
 			
-			filmes.add(filme);
+				filmes.add(filme);
+			}
+		
+			rs.close();
+			stmt.close();
+		
+			return filmes;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
-		
-		rs.close();
-		stmt.close();
-		
-		return filmes;
+	}
+	 
+	public Filme procuraPorID (long ID) {
+		String sql = "select * from Filme where IDFilme = ?;";
+		try ( PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setLong(1, ID);
+			ResultSet rs = stmt.executeQuery();
+			
+			Filme filme = new Filme();
+			
+			while(rs.next()){
+				filme.setID(rs.getLong("IDFilme"));
+				filme.setNomeOrig(rs.getString("nomeOrig"));
+				filme.setNomePort(rs.getString("nomePort"));
+				filme.setAno(rs.getInt("ano"));
+				filme.setDuracao(rs.getInt("duracao"));
+				filme.setClassificacao(rs.getInt("classificacao"));
+				filme.setSinopse(rs.getString("sinopse"));
+				filme.setQuantidadeVotos(rs.getInt("quantidadeVotos"));
+				filme.setSomaVotos(rs.getDouble("somaVotos"));
+			}
+			
+			return filme;
+		} catch (SQLException e){
+			throw new RuntimeException(e);
+		}
 		
 	}
 }

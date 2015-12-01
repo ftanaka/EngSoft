@@ -3,7 +3,7 @@ package jdbc.teste;
 import jdbc.dao.FilmeDao;
 import jdbc.modelo.Filme;
 
-public class TestaInsere {
+public class TestaInsereFilme {
 	public static void main(String[] args) {
 		Filme filme = new Filme();
 		filme.setNomePort("Mad Max");
